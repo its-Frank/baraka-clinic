@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %> - Baraka Clinic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body class="bg-gray-100 min-h-screen flex flex-col">
+    <!-- Header -->
+    <%- include('partials/header') %>
+
+    <!-- Main Content -->
+    <div class="flex flex-col md:flex-row flex-1">
+      <!-- Sidebar -->
+      <%- include('partials/sidebar') %>
+
+      <!-- Content -->
+      <div class="flex-1 p-4 md:p-6">
+        <div class="flex justify-between items-center mb-6">
+          <div>
+            <h1 class="text-2xl font-bold text-gray-800">Bills Management</h1>
+            <p class="text-gray-600">Manage patient bills</p>
+          </div>
+          <a
+            href="/bills/new"
+            class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded flex items-center"
+          >
+            <i class="fas fa-plus mr-2"></i> Generate New Bill
+          </a>
+        </div>
+
+        <!-- Flash Messages -->
+        <% if(typeof success_msg !== 'undefined' && success_msg.length > 0) { %>
+        <div
+          class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+          role="alert"
+        >
+          <span class="block sm:inline"><%= success_msg %></span>
+        </div>
+        <% } %> <% if(typeof error_msg !== 'undefined' && error_msg.length > 0)
+        { %>
+        <div
+          class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+          role="alert"
+        >
+          <span class="block sm:inline"><%= error_msg %></span>
+        </div>
+        <% } %>
+
+        <!-- Filter Options -->
+        <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+          <form
+            action="/bills"
+            method="GET"
+            class="flex flex-col md:flex-row gap-4"
+          >
+            <div class="flex-1">
+              <select
+                name="status"
+                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+              >
+                <option value="">All Statuses</option>
+                <option value="pending">Pending</option>
+                <option value="paid">Paid</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+            <button
+              type="submit"
+              class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
+            >
+              <i class="fas fa-filter mr-2"></i> Filter
+            </button>
+          </form>
+        </div>
+
+        <!-- Bills Table -->
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+          <% if (bills && bills.length > 0) { %>
+          <div class="overflow-x-auto">
+            <table class="min-w-full bg-white">
+              <thead class="bg-gray-100">
+                <tr>
+                  <th
+                    class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    ID
+                  </th>
+                  <th
+                    class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Patient
+                  </th>
+                  <th
+                    class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Amount
+                  </th>
+                  <th
+                    class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Description
+                  </th>
+                  <th
+                    class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Generated Date
+                  </th>
+                  <th
+                    class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Status
+                  </th>
+                  <th
+                    class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200">
+                <% bills.forEach(bill => { %>
+                <tr>
+                  <td class="py-3 px-4 whitespace-nowrap"><%= bill.id %></td>
+                  <td class="py-3 px-4 whitespace-nowrap">
+                    <%= bill.patient_first_name %> <%= bill.patient_last_name %>
+                  </td>
+                  <td class="py-3 px-4 whitespace-nowrap">
+                    $<%= isNaN(parseFloat(bill.amount)) ? '0.00' :
+                    parseFloat(bill.amount).toFixed(2) %>
+                  </td>
+                  <td class="py-3 px-4"><%= bill.description %></td>
+                  <td class="py-3 px-4 whitespace-nowrap">
+                    <%= new Date(bill.generated_date).toLocaleDateString() %>
+                  </td>
+                  <td class="py-3 px-4 whitespace-nowrap">
+                    <% if (bill.status === 'pending') { %>
+                    <span
+                      class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800"
+                    >
+                      Pending
+                    </span>
+                    <% } else if (bill.status === 'paid') { %>
+                    <span
+                      class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+                    >
+                      Paid
+                    </span>
+                    <% } else { %>
+                    <span
+                      class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
+                    >
+                      Cancelled
+                    </span>
+                    <% } %>
+                  </td>
+                  <td class="py-3 px-4 whitespace-nowrap">
+                    <% if (bill.status === 'pending') { %>
+                    <form
+                      action="/bills/<%= bill.id %>?_method=PUT"
+                      method="POST"
+                      class="inline"
+                    >
+                      <input type="hidden" name="status" value="paid" />
+                      <button
+                        type="submit"
+                        class="text-green-600 hover:text-green-900 mr-2"
+                        title="Mark as Paid"
+                      >
+                        <i class="fas fa-check-circle"></i>
+                      </button>
+                    </form>
+                    <form
+                      action="/bills/<%= bill.id %>?_method=PUT"
+                      method="POST"
+                      class="inline"
+                    >
+                      <input type="hidden" name="status" value="cancelled" />
+                      <button
+                        type="submit"
+                        class="text-red-600 hover:text-red-900"
+                        title="Cancel Bill"
+                      >
+                        <i class="fas fa-times-circle"></i>
+                      </button>
+                    </form>
+                    <% } %>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+          <% } else { %>
+          <div class="flex items-center justify-center h-40 bg-gray-50">
+            <p class="text-gray-500">No bills found</p>
+          </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <%- include('partials/footer') %>
+
+    <script>
+      // Mobile menu toggle
+      document.addEventListener("DOMContentLoaded", function () {
+        const sidebar = document.querySelector(".sidebar");
+        const menuToggle = document.getElementById("menu-toggle");
+
+        if (menuToggle) {
+          menuToggle.addEventListener("click", function () {
+            sidebar.classList.toggle("-translate-x-full");
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
