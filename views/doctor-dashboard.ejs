@@ -46,7 +46,7 @@
         </div>
         <% } %>
 
-        <div class="grid grid-cols-1 md Grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- Personal Information -->
           <div class="bg-white rounded-lg shadow-md p-6">
             <h2
@@ -88,8 +88,7 @@
               <div class="flex flex-col">
                 <span class="text-gray-500 text-sm">Salary</span>
                 <span class="font-medium"
-                  >$<%= (doctor.salary && !isNaN(parseFloat(doctor.salary))) ?
-                  parseFloat(doctor.salary).toFixed(2) : '0.00' %></span
+                  >$<%= (parseFloat(doctor.salary) || 0).toFixed(2) %></span
                 >
               </div>
             </div>

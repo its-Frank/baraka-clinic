@@ -81,7 +81,7 @@
                 <label
                   for="amount"
                   class="block text-gray-700 text-sm font-bold mb-2"
-                  >Amount ($)*</label
+                  >Total Amount ($)*</label
                 >
                 <input
                   type="number"
@@ -95,30 +95,174 @@
               </div>
             </div>
 
+            <div id="service-items" class="mb-6">
+              <div class="flex justify-between items-center mb-2">
+                <label class="block text-gray-700 text-sm font-bold"
+                  >Service Items</label
+                >
+                <button
+                  type="button"
+                  id="add-service"
+                  class="bg-teal-600 hover:bg-teal-700 text-white text-sm py-1 px-2 rounded"
+                >
+                  <i class="fas fa-plus mr-1"></i> Add Item
+                </button>
+              </div>
+
+              <div class="service-item bg-gray-50 p-3 rounded mb-2">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                  <div class="md:col-span-2">
+                    <label class="block text-gray-700 text-xs mb-1"
+                      >Description</label
+                    >
+                    <input
+                      type="text"
+                      name="service_desc[]"
+                      class="service-desc shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      placeholder="e.g. Room Charges"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-gray-700 text-xs mb-1"
+                      >Amount ($)</label
+                    >
+                    <input
+                      type="number"
+                      name="service_amount[]"
+                      class="service-amount shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      min="0"
+                      step="0.01"
+                      placeholder="0.00"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div class="mb-6">
               <label
                 for="description"
                 class="block text-gray-700 text-sm font-bold mb-2"
-                >Description*</label
+                >Additional Notes</label
               >
               <textarea
                 id="description"
-                name="description"
+                name="notes"
                 rows="3"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                required
               ></textarea>
+              <input
+                type="hidden"
+                id="full-description"
+                name="description"
+                value=""
+              />
             </div>
 
             <div class="flex items-center justify-end">
               <button
                 type="submit"
+                id="submit-bill"
                 class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               >
                 Generate Bill
               </button>
             </div>
           </form>
+
+          <script>
+            document.addEventListener("DOMContentLoaded", function () {
+              const addServiceBtn = document.getElementById("add-service");
+              const serviceItems = document.getElementById("service-items");
+              const submitBtn = document.getElementById("submit-bill");
+
+              // Add new service item
+              addServiceBtn.addEventListener("click", function () {
+                const newItem = document.createElement("div");
+                newItem.className =
+                  "service-item bg-gray-50 p-3 rounded mb-2 relative";
+                newItem.innerHTML = `
+        <button type="button" class="remove-item absolute top-2 right-2 text-red-500 hover:text-red-700">
+          <i class="fas fa-times"></i>
+        </button>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+          <div class="md:col-span-2">
+            <label class="block text-gray-700 text-xs mb-1">Description</label>
+            <input type="text" name="service_desc[]" class="service-desc shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="e.g. Operation Charges" required>
+          </div>
+          <div>
+            <label class="block text-gray-700 text-xs mb-1">Amount ($)</label>
+            <input type="number" name="service_amount[]" class="service-amount shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" min="0" step="0.01" placeholder="0.00" required>
+          </div>
+        </div>
+      `;
+                serviceItems.appendChild(newItem);
+
+                // Add event listener to remove button
+                const removeBtn = newItem.querySelector(".remove-item");
+                removeBtn.addEventListener("click", function () {
+                  serviceItems.removeChild(newItem);
+                  updateTotalAmount();
+                });
+
+                // Add event listeners to update total
+                const amountInput = newItem.querySelector(".service-amount");
+                amountInput.addEventListener("input", updateTotalAmount);
+              });
+
+              // Update total amount when service amounts change
+              document.addEventListener("input", function (e) {
+                if (e.target.classList.contains("service-amount")) {
+                  updateTotalAmount();
+                }
+              });
+
+              // Calculate total from service items
+              function updateTotalAmount() {
+                const amountInputs =
+                  document.querySelectorAll(".service-amount");
+                let total = 0;
+
+                amountInputs.forEach((input) => {
+                  const value = parseFloat(input.value) || 0;
+                  total += value;
+                });
+
+                document.getElementById("amount").value = total.toFixed(2);
+              }
+
+              // Prepare the full description before submitting
+              submitBtn.addEventListener("click", function (e) {
+                const descInputs = document.querySelectorAll(".service-desc");
+                const amountInputs =
+                  document.querySelectorAll(".service-amount");
+                const notes = document.getElementById("description").value;
+
+                let fullDescription = "";
+
+                for (let i = 0; i < descInputs.length; i++) {
+                  const desc = descInputs[i].value.trim();
+                  const amount = parseFloat(amountInputs[i].value) || 0;
+
+                  if (desc) {
+                    if (fullDescription) {
+                      fullDescription += " | ";
+                    }
+                    fullDescription += `${desc}: ${amount.toFixed(2)}`;
+                  }
+                }
+
+                if (notes) {
+                  fullDescription += ` | Notes: ${notes}`;
+                }
+
+                document.getElementById("full-description").value =
+                  fullDescription;
+              });
+            });
+          </script>
         </div>
       </div>
     </div>

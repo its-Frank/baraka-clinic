@@ -263,7 +263,7 @@
                     </td>
                     <td class="py-3 px-4"><%= bill.description %></td>
                     <td class="py-3 px-4 whitespace-nowrap">
-                      $<%= bill.amount.toFixed(2) %>
+                      $<%= (parseFloat(bill.amount) || 0).toFixed(2) %>
                     </td>
                     <td class="py-3 px-4 whitespace-nowrap">
                       <% if (bill.status === 'pending') { %>
@@ -312,13 +312,21 @@
                         <input type="hidden" name="status" value="cancelled" />
                         <button
                           type="submit"
-                          class="text-red-600 hover:text-red-900"
+                          class="text-red-600 hover:text-red-900 mr-3"
                           title="Cancel Bill"
                         >
                           <i class="fas fa-times-circle"></i>
                         </button>
                       </form>
                       <% } %>
+                      <a
+                        href="/bills/<%= bill.id %>/receipt"
+                        target="_blank"
+                        class="text-blue-600 hover:text-blue-900"
+                        title="View Receipt"
+                      >
+                        <i class="fas fa-file-invoice"></i>
+                      </a>
                     </td>
                     <% } %>
                   </tr>

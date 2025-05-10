@@ -131,8 +131,7 @@
                     <%= bill.patient_first_name %> <%= bill.patient_last_name %>
                   </td>
                   <td class="py-3 px-4 whitespace-nowrap">
-                    $<%= isNaN(parseFloat(bill.amount)) ? '0.00' :
-                    parseFloat(bill.amount).toFixed(2) %>
+                    $<%= (parseFloat(bill.amount) || 0).toFixed(2) %>
                   </td>
                   <td class="py-3 px-4"><%= bill.description %></td>
                   <td class="py-3 px-4 whitespace-nowrap">
@@ -190,6 +189,14 @@
                       </button>
                     </form>
                     <% } %>
+                    <a
+                      href="/bills/<%= bill.id %>/receipt"
+                      target="_blank"
+                      class="text-blue-600 hover:text-blue-900"
+                      title="View Receipt"
+                    >
+                      <i class="fas fa-file-invoice"></i>
+                    </a>
                   </td>
                 </tr>
                 <% }) %>

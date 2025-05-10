@@ -243,8 +243,7 @@
               <div class="flex flex-col">
                 <span class="text-gray-500 text-sm">Salary</span>
                 <span class="font-medium"
-                  >$<%= doctor.salary ? doctor.salary.toFixed(2) : '0.00'
-                  %></span
+                  >$<%= (parseFloat(doctor.salary) || 0).toFixed(2) %></span
                 >
               </div>
               <div class="flex flex-col">

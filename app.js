@@ -1423,6 +1423,89 @@ app.put("/bills/:id", checkRole(["admin", "superadmin"]), (req, res) => {
   });
 });
 
+// Bill receipt route
+app.get(
+  "/bills/:id/receipt",
+  checkRole(["admin", "superadmin", "patient"]),
+  (req, res) => {
+    const billId = req.params.id;
+    const userRole = req.session.user.role;
+    const userId = req.session.user.id;
+
+    // Get bill details
+    db.query(
+      "SELECT * FROM bills WHERE id = ?",
+      [billId],
+      (err, billResults) => {
+        if (err) {
+          console.error("Error fetching bill:", err);
+          req.flash("error_msg", "An error occurred. Please try again.");
+          return res.redirect("/bills");
+        }
+
+        if (billResults.length === 0) {
+          req.flash("error_msg", "Bill not found");
+          return res.redirect("/bills");
+        }
+
+        const bill = billResults[0];
+
+        // Get patient details
+        db.query(
+          "SELECT * FROM patients WHERE id = ?",
+          [bill.patient_id],
+          (err, patientResults) => {
+            if (err) {
+              console.error("Error fetching patient:", err);
+              req.flash("error_msg", "An error occurred. Please try again.");
+              return res.redirect("/bills");
+            }
+
+            if (patientResults.length === 0) {
+              req.flash("error_msg", "Patient not found");
+              return res.redirect("/bills");
+            }
+
+            const patient = patientResults[0];
+
+            // If user is a patient, verify they own this bill
+            if (userRole === "patient") {
+              db.query(
+                "SELECT p.id FROM patients p JOIN users u ON p.user_id = u.id WHERE u.id = ?",
+                [userId],
+                (err, userPatientResults) => {
+                  if (err || userPatientResults.length === 0) {
+                    req.flash("error_msg", "Unauthorized access");
+                    return res.redirect("/dashboard");
+                  }
+
+                  const patientId = userPatientResults[0].id;
+                  if (patientId !== bill.patient_id) {
+                    req.flash("error_msg", "Unauthorized access");
+                    return res.redirect("/dashboard");
+                  }
+
+                  // Render receipt
+                  res.render("bill-receipt", {
+                    bill,
+                    patient,
+                  });
+                }
+              );
+            } else {
+              // Admin or superadmin can view any receipt
+              res.render("bill-receipt", {
+                bill,
+                patient,
+              });
+            }
+          }
+        );
+      }
+    );
+  }
+);
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

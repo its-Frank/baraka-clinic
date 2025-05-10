@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bill Receipt - Baraka Clinic</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    .receipt {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .receipt-header {
+      text-align: center;
+      margin-bottom: 30px;
+      border-bottom: 2px solid #0d9488;
+      padding-bottom: 20px;
+    }
+    .receipt-header h1 {
+      color: #0d9488;
+      margin: 0;
+      font-size: 24px;
+    }
+    .receipt-header p {
+      margin: 5px 0;
+      color: #666;
+    }
+    .receipt-info {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+    }
+    .receipt-info-block {
+      width: 48%;
+    }
+    .receipt-info-block h3 {
+      margin-top: 0;
+      color: #0d9488;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 5px;
+    }
+    .receipt-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+    .receipt-table th {
+      background-color: #f3f4f6;
+      text-align: left;
+      padding: 10px;
+      border-bottom: 2px solid #ddd;
+    }
+    .receipt-table td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+    .receipt-total {
+      text-align: right;
+      margin-top: 20px;
+    }
+    .receipt-total h3 {
+      margin: 5px 0;
+    }
+    .receipt-footer {
+      margin-top: 50px;
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+      border-top: 1px solid #ddd;
+      padding-top: 20px;
+    }
+    .status-paid {
+      color: #047857;
+      font-weight: bold;
+    }
+    .status-pending {
+      color: #d97706;
+      font-weight: bold;
+    }
+    .status-cancelled {
+      color: #dc2626;
+      font-weight: bold;
+    }
+    .receipt-stamp {
+      margin-top: 40px;
+      text-align: center;
+    }
+    .stamp {
+      display: inline-block;
+      padding: 10px 20px;
+      border: 2px solid #047857;
+      color: #047857;
+      font-weight: bold;
+      border-radius: 10px;
+      transform: rotate(-15deg);
+      font-size: 18px;
+      opacity: 0.8;
+    }
+    @media print {
+      body {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+      .no-print {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="receipt">
+    <div class="receipt-header">
+      <h1>Baraka General Medical Clinic</h1>
+      <p>123 Medical Plaza, Nairobi, Kenya</p>
+      <p>Phone: +254 700 000 000 | Email: info@barakaclinic.com</p>
+    </div>
+
+    <div class="receipt-info">
+      <div class="receipt-info-block">
+        <h3>Patient Information</h3>
+        <p><strong>Name:</strong> <%= patient.first_name %> <%= patient.last_name %></p>
+        <p><strong>Email:</strong> <%= patient.email %></p>
+        <p><strong>Phone:</strong> <%= patient.phone %></p>
+        <% if (patient.address) { %>
+          <p><strong>Address:</strong> <%= patient.address %></p>
+        <% } %>
+      </div>
+      <div class="receipt-info-block">
+        <h3>Receipt Details</h3>
+        <p><strong>Receipt No:</strong> BRK-<%= bill.id.toString().padStart(6, '0') %></p>
+        <p><strong>Date:</strong> <%= new Date(bill.generated_date).toLocaleDateString() %></p>
+        <p><strong>Status:</strong> 
+          <% if (bill.status === 'paid') { %>
+            <span class="status-paid">PAID</span>
+            <p><strong>Payment Date:</strong> <%= bill.payment_date ? new Date(bill.payment_date).toLocaleDateString() : 'N/A' %></p>
+          <% } else if (bill.status === 'pending') { %>
+            <span class="status-pending">PENDING</span>
+          <% } else { %>
+            <span class="status-cancelled">CANCELLED</span>
+          <% } %>
+        </p>
+      </div>
+    </div>
+
+    <table class="receipt-table">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% 
+          // Parse the description to extract service items if possible
+          let serviceItems = [];
+          try {
+            if (bill.description.includes('|')) {
+              serviceItems = bill.description.split('|').map(item => {
+                const [desc, amount] = item.split(':');
+                return { description: desc.trim(), amount: parseFloat(amount) || 0 };
+              });
+            } else {
+              serviceItems = [{ description: bill.description, amount: bill.amount }];
+            }
+          } catch (e) {
+            serviceItems = [{ description: bill.description, amount: bill.amount }];
+          }
+        %>
+        
+        <% serviceItems.forEach(item => { %>
+          <tr>
+            <td><%= item.description %></td>
+            <td>$<%= (parseFloat(item.amount) || 0).toFixed(2) %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+
+    <div class="receipt-total">
+      <h3>Total Amount: $<%= (parseFloat(bill.amount) || 0).toFixed(2) %></h3>
+    </div>
+
+    <% if (bill.status === 'paid') { %>
+      <div class="receipt-stamp">
+        <div class="stamp">PAID</div>
+      </div>
+    <% } %>
+
+    <div class="receipt-footer">
+      <p>Thank you for choosing Baraka General Medical Clinic for your healthcare needs.</p>
+      <p>For any inquiries regarding this bill, please contact our billing department.</p>
+      <p>&copy; <%= new Date().getFullYear() %> Baraka General Medical Clinic. All rights reserved.</p>
+    </div>
+  </div>
+
+  <div class="no-print" style="text-align: center; margin: 20px;">
+    <button onclick="window.print()" style="background-color: #0d9488; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+      Print Receipt
+    </button>
+    <button onclick="window.close()" style="background-color: #6b7280; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-left: 10px;">
+      Close
+    </button>
+  </div>
+</body>
+</html>
