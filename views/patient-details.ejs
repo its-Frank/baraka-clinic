@@ -263,7 +263,7 @@
                     </td>
                     <td class="py-3 px-4"><%= bill.description %></td>
                     <td class="py-3 px-4 whitespace-nowrap">
-                      $<%= (parseFloat(bill.amount) || 0).toFixed(2) %>
+                      Ksh <%= (parseFloat(bill.amount) || 0).toFixed(2) %>
                     </td>
                     <td class="py-3 px-4 whitespace-nowrap">
                       <% if (bill.status === 'pending') { %>
