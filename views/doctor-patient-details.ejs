@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%= title %> - Baraka Clinic</title>
+    <title>Patient Details - Baraka Clinic</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       rel="stylesheet"
@@ -21,11 +21,39 @@
 
       <!-- Content -->
       <div class="flex-1 p-4 md:p-6">
-        <div class="mb-6">
-          <h1 class="text-2xl font-bold text-gray-800">Doctor Dashboard</h1>
-          <p class="text-gray-600">
-            Welcome, Dr. <%= doctor.first_name %> <%= doctor.last_name %>
-          </p>
+        <div class="mb-6 flex justify-between items-center">
+          <div>
+            <h1 class="text-2xl font-bold text-gray-800">Patient Details</h1>
+            <p class="text-gray-600">
+              <%= patient.first_name %> <%= patient.last_name %>
+            </p>
+          </div>
+          <div class="flex space-x-2">
+            <a
+              href="/doctor/consultations/new?patient_id=<%= patient.id %>"
+              class="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md flex items-center"
+            >
+              <i class="fas fa-stethoscope mr-2"></i> New Consultation
+            </a>
+            <a
+              href="/doctor/lab-tests/request?patient_id=<%= patient.id %>"
+              class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md flex items-center"
+            >
+              <i class="fas fa-flask mr-2"></i> Request Lab Test
+            </a>
+            <a
+              href="/doctor/bills/new?patient_id=<%= patient.id %>"
+              class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-md flex items-center"
+            >
+              <i class="fas fa-file-invoice-dollar mr-2"></i> Generate Bill
+            </a>
+            <a
+              href="/doctor/patients"
+              class="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-md flex items-center"
+            >
+              <i class="fas fa-arrow-left mr-2"></i> Back
+            </a>
+          </div>
         </div>
 
         <!-- Flash Messages -->
@@ -46,151 +74,103 @@
         </div>
         <% } %>
 
-        <!-- Quick Actions -->
-        <div class="mb-6">
-          <h2
-            class="text-xl font-semibold mb-4 text-gray-800 flex items-center"
-          >
-            <i class="fas fa-bolt text-teal-600 mr-2"></i> Quick Actions
-          </h2>
-          <div class="flex flex-wrap gap-3">
-            <a
-              href="/doctor/consultations/new"
-              class="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md flex items-center"
-            >
-              <i class="fas fa-stethoscope mr-2"></i> New Consultation
-            </a>
-            <a
-              href="/doctor/lab-tests/request"
-              class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md flex items-center"
-            >
-              <i class="fas fa-flask mr-2"></i> Request Lab Test
-            </a>
-            <a
-              href="/doctor/bills/new"
-              class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-md flex items-center"
-            >
-              <i class="fas fa-file-invoice-dollar mr-2"></i> Generate Bill
-            </a>
-            <a
-              href="/doctor/patients"
-              class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-md flex items-center"
-            >
-              <i class="fas fa-users mr-2"></i> View All Patients
-            </a>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- Personal Information -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Patient Information -->
           <div class="bg-white rounded-lg shadow-md p-6">
             <h2
               class="text-xl font-semibold mb-4 text-gray-800 flex items-center"
             >
-              <i class="fas fa-user-md text-teal-600 mr-2"></i> Personal
-              Information
+              <i class="fas fa-user text-teal-600 mr-2"></i> Patient Information
             </h2>
+
             <div class="space-y-3">
               <div class="flex flex-col">
                 <span class="text-gray-500 text-sm">Full Name</span>
                 <span class="font-medium"
-                  >Dr. <%= doctor.first_name %> <%= doctor.last_name %></span
+                  ><%= patient.first_name %> <%= patient.last_name %></span
                 >
               </div>
+
               <div class="flex flex-col">
                 <span class="text-gray-500 text-sm">Email</span>
-                <span class="font-medium"><%= doctor.email %></span>
+                <span class="font-medium"><%= patient.email %></span>
               </div>
+
               <div class="flex flex-col">
                 <span class="text-gray-500 text-sm">Phone</span>
-                <span class="font-medium"><%= doctor.phone %></span>
+                <span class="font-medium"><%= patient.phone %></span>
               </div>
+
               <div class="flex flex-col">
-                <span class="text-gray-500 text-sm">Specialization</span>
-                <span class="font-medium"><%= doctor.specialization %></span>
-              </div>
-              <% if (doctor.qualification) { %>
-              <div class="flex flex-col">
-                <span class="text-gray-500 text-sm">Qualification</span>
-                <span class="font-medium"><%= doctor.qualification %></span>
-              </div>
-              <% } %> <% if (doctor.experience) { %>
-              <div class="flex flex-col">
-                <span class="text-gray-500 text-sm">Experience</span>
-                <span class="font-medium"><%= doctor.experience %> years</span>
-              </div>
-              <% } %>
-              <div class="flex flex-col">
-                <span class="text-gray-500 text-sm">Salary</span>
+                <span class="text-gray-500 text-sm">Gender</span>
                 <span class="font-medium"
-                  >Ksh <%= (parseFloat(doctor.salary) || 0).toFixed(2) %></span
+                  ><%= patient.gender ? (patient.gender.charAt(0).toUpperCase()
+                  + patient.gender.slice(1)) : 'N/A' %></span
                 >
               </div>
+
+              <% if (patient.date_of_birth) { %>
+              <div class="flex flex-col">
+                <span class="text-gray-500 text-sm">Date of Birth</span>
+                <span class="font-medium"
+                  ><%= new Date(patient.date_of_birth).toLocaleDateString()
+                  %></span
+                >
+              </div>
+              <% } %> <% if (patient.blood_group) { %>
+              <div class="flex flex-col">
+                <span class="text-gray-500 text-sm">Blood Group</span>
+                <span class="font-medium"><%= patient.blood_group %></span>
+              </div>
+              <% } %> <% if (patient.address) { %>
+              <div class="flex flex-col">
+                <span class="text-gray-500 text-sm">Address</span>
+                <span class="font-medium"><%= patient.address %></span>
+              </div>
+              <% } %>
             </div>
           </div>
 
-          <!-- Stats -->
-          <div class="bg-white rounded-lg shadow-md p-6">
+          <!-- Medical History -->
+          <div class="md:col-span-2 bg-white rounded-lg shadow-md p-6">
             <h2
               class="text-xl font-semibold mb-4 text-gray-800 flex items-center"
             >
-              <i class="fas fa-chart-pie text-teal-600 mr-2"></i> Statistics
+              <i class="fas fa-notes-medical text-teal-600 mr-2"></i> Medical
+              History
             </h2>
-            <div class="grid grid-cols-2 gap-4">
-              <div class="bg-teal-50 p-4 rounded-lg border border-teal-100">
-                <div class="text-3xl font-bold text-teal-600 mb-1">
-                  <%= stats.patientCount %>
-                </div>
-                <div class="text-sm text-gray-600">Assigned Patients</div>
-              </div>
-              <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
-                <div class="text-3xl font-bold text-blue-600 mb-1">
-                  <%= stats.consultationCount %>
-                </div>
-                <div class="text-sm text-gray-600">Consultations</div>
-              </div>
-              <div class="bg-purple-50 p-4 rounded-lg border border-purple-100">
-                <div class="text-3xl font-bold text-purple-600 mb-1">
-                  <%= stats.labTestCount %>
-                </div>
-                <div class="text-sm text-gray-600">Lab Tests</div>
-              </div>
-              <div class="bg-green-50 p-4 rounded-lg border border-green-100">
-                <div class="text-3xl font-bold text-green-600 mb-1">
-                  <%= stats.billCount %>
-                </div>
-                <div class="text-sm text-gray-600">Bills Generated</div>
-              </div>
+
+            <% if (patient.medical_history) { %>
+            <div class="whitespace-pre-line">
+              <%= patient.medical_history %>
             </div>
+            <% } else { %>
+            <div class="text-gray-500">No medical history recorded</div>
+            <% } %>
           </div>
         </div>
 
-        <!-- Recent Consultations -->
+        <!-- Consultations -->
         <div class="mt-6">
           <div class="bg-white rounded-lg shadow-md p-6">
             <div class="flex justify-between items-center mb-4">
               <h2 class="text-xl font-semibold text-gray-800 flex items-center">
-                <i class="fas fa-stethoscope text-teal-600 mr-2"></i> Recent
+                <i class="fas fa-stethoscope text-teal-600 mr-2"></i>
                 Consultations
               </h2>
               <a
-                href="/doctor/consultations"
+                href="/doctor/consultations/new?patient_id=<%= patient.id %>"
                 class="text-teal-600 hover:text-teal-800 text-sm font-medium"
               >
-                View All <i class="fas fa-arrow-right ml-1"></i>
+                <i class="fas fa-plus mr-1"></i> New Consultation
               </a>
             </div>
 
-            <% if (recentConsultations && recentConsultations.length > 0) { %>
+            <% if (consultations && consultations.length > 0) { %>
             <div class="overflow-x-auto">
               <table class="min-w-full bg-white">
                 <thead class="bg-gray-100">
                   <tr>
-                    <th
-                      class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      Patient
-                    </th>
                     <th
                       class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
@@ -214,11 +194,8 @@
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
-                  <% recentConsultations.forEach(consultation => { %>
+                  <% consultations.forEach(consultation => { %>
                   <tr>
-                    <td class="py-3 px-4 whitespace-nowrap">
-                      <%= consultation.patient_name %>
-                    </td>
                     <td class="py-3 px-4 whitespace-nowrap">
                       <%= new
                       Date(consultation.consultation_date).toLocaleDateString()
@@ -283,23 +260,22 @@
           </div>
         </div>
 
-        <!-- Assigned Patients Section -->
+        <!-- Lab Tests -->
         <div class="mt-6">
           <div class="bg-white rounded-lg shadow-md p-6">
             <div class="flex justify-between items-center mb-4">
               <h2 class="text-xl font-semibold text-gray-800 flex items-center">
-                <i class="fas fa-users text-teal-600 mr-2"></i> Assigned
-                Patients
+                <i class="fas fa-flask text-teal-600 mr-2"></i> Lab Tests
               </h2>
               <a
-                href="/doctor/patients"
+                href="/doctor/lab-tests/request?patient_id=<%= patient.id %>"
                 class="text-teal-600 hover:text-teal-800 text-sm font-medium"
               >
-                View All <i class="fas fa-arrow-right ml-1"></i>
+                <i class="fas fa-plus mr-1"></i> Request Test
               </a>
             </div>
 
-            <% if (patients && patients.length > 0) { %>
+            <% if (labTests && labTests.length > 0) { %>
             <div class="overflow-x-auto">
               <table class="min-w-full bg-white">
                 <thead class="bg-gray-100">
@@ -307,27 +283,17 @@
                     <th
                       class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
-                      Patient ID
+                      Test Name
                     </th>
                     <th
                       class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
-                      Name
+                      Requested Date
                     </th>
                     <th
                       class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
-                      Gender
-                    </th>
-                    <th
-                      class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      Phone
-                    </th>
-                    <th
-                      class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      Assigned Date
+                      Status
                     </th>
                     <th
                       class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -337,57 +303,42 @@
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
-                  <% patients.forEach(patient => { %>
+                  <% labTests.forEach(test => { %>
                   <tr>
                     <td class="py-3 px-4 whitespace-nowrap">
-                      <%= patient.id %>
+                      <%= test.test_name %>
                     </td>
                     <td class="py-3 px-4 whitespace-nowrap">
-                      <%= patient.first_name %> <%= patient.last_name %>
+                      <%= new Date(test.requested_date).toLocaleDateString() %>
                     </td>
                     <td class="py-3 px-4 whitespace-nowrap">
-                      <%= patient.gender ?
-                      (patient.gender.charAt(0).toUpperCase() +
-                      patient.gender.slice(1)) : 'N/A' %>
+                      <% if (test.status === 'pending') { %>
+                      <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800"
+                      >
+                        Pending
+                      </span>
+                      <% } else if (test.status === 'completed') { %>
+                      <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+                      >
+                        Completed
+                      </span>
+                      <% } else { %>
+                      <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
+                      >
+                        Cancelled
+                      </span>
+                      <% } %>
                     </td>
                     <td class="py-3 px-4 whitespace-nowrap">
-                      <%= patient.phone %>
-                    </td>
-                    <td class="py-3 px-4 whitespace-nowrap">
-                      <%= new Date(patient.assigned_date).toLocaleDateString()
-                      %>
-                    </td>
-                    <td class="py-3 px-4 whitespace-nowrap">
-                      <div class="flex space-x-2">
-                        <a
-                          href="/doctor/patients/<%= patient.id %>"
-                          class="text-blue-600 hover:text-blue-900"
-                          title="View Patient"
-                        >
-                          <i class="fas fa-eye"></i>
-                        </a>
-                        <a
-                          href="/doctor/consultations/new?patient_id=<%= patient.id %>"
-                          class="text-teal-600 hover:text-teal-900"
-                          title="New Consultation"
-                        >
-                          <i class="fas fa-stethoscope"></i>
-                        </a>
-                        <a
-                          href="/doctor/lab-tests/request?patient_id=<%= patient.id %>"
-                          class="text-purple-600 hover:text-purple-900"
-                          title="Request Lab Test"
-                        >
-                          <i class="fas fa-flask"></i>
-                        </a>
-                        <a
-                          href="/doctor/bills/new?patient_id=<%= patient.id %>"
-                          class="text-green-600 hover:text-green-900"
-                          title="Generate Bill"
-                        >
-                          <i class="fas fa-file-invoice-dollar"></i>
-                        </a>
-                      </div>
+                      <a
+                        href="/lab-tests/view/<%= test.id %>"
+                        class="text-blue-600 hover:text-blue-900"
+                      >
+                        <i class="fas fa-eye"></i>
+                      </a>
                     </td>
                   </tr>
                   <% }) %>
@@ -398,7 +349,113 @@
             <div
               class="flex items-center justify-center h-32 bg-gray-50 rounded-lg border border-dashed border-gray-300"
             >
-              <p class="text-gray-500">No patients assigned yet</p>
+              <p class="text-gray-500">No lab tests requested yet</p>
+            </div>
+            <% } %>
+          </div>
+        </div>
+
+        <!-- Bills -->
+        <div class="mt-6">
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+                <i class="fas fa-file-invoice-dollar text-teal-600 mr-2"></i>
+                Bills
+              </h2>
+              <a
+                href="/doctor/bills/new?patient_id=<%= patient.id %>"
+                class="text-teal-600 hover:text-teal-800 text-sm font-medium"
+              >
+                <i class="fas fa-plus mr-1"></i> Generate Bill
+              </a>
+            </div>
+
+            <% if (bills && bills.length > 0) { %>
+            <div class="overflow-x-auto">
+              <table class="min-w-full bg-white">
+                <thead class="bg-gray-100">
+                  <tr>
+                    <th
+                      class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Amount
+                    </th>
+                    <th
+                      class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Description
+                    </th>
+                    <th
+                      class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Generated Date
+                    </th>
+                    <th
+                      class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Status
+                    </th>
+                    <th
+                      class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                  <% bills.forEach(bill => { %>
+                  <tr>
+                    <td class="py-3 px-4 whitespace-nowrap">
+                      Ksh <%= parseFloat(bill.amount).toFixed(2) %>
+                    </td>
+                    <td class="py-3 px-4">
+                      <div class="truncate max-w-xs">
+                        <%= bill.description %>
+                      </div>
+                    </td>
+                    <td class="py-3 px-4 whitespace-nowrap">
+                      <%= new Date(bill.generated_date).toLocaleDateString() %>
+                    </td>
+                    <td class="py-3 px-4 whitespace-nowrap">
+                      <% if (bill.status === 'pending') { %>
+                      <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800"
+                      >
+                        Pending
+                      </span>
+                      <% } else if (bill.status === 'paid') { %>
+                      <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+                      >
+                        Paid
+                      </span>
+                      <% } else { %>
+                      <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
+                      >
+                        Cancelled
+                      </span>
+                      <% } %>
+                    </td>
+                    <td class="py-3 px-4 whitespace-nowrap">
+                      <a
+                        href="/bills/<%= bill.id %>/receipt"
+                        class="text-blue-600 hover:text-blue-900"
+                      >
+                        <i class="fas fa-receipt"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+            <% } else { %>
+            <div
+              class="flex items-center justify-center h-32 bg-gray-50 rounded-lg border border-dashed border-gray-300"
+            >
+              <p class="text-gray-500">No bills generated yet</p>
             </div>
             <% } %>
           </div>

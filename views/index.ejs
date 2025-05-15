@@ -49,84 +49,84 @@
               class="hover:text-teal-200 transition duration-300"
               >Contact</a
             >
-          </div>
-          <div class="relative">
-            <button
-              id="nav-login-dropdown-btn"
-              class="bg-white text-teal-700 hover:bg-gray-100 font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 flex items-center"
-            >
-              Login
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-4 w-4 ml-1"
-                id="nav-dropdown-arrow"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+            <div class="relative">
+              <button
+                id="nav-login-dropdown-btn"
+                class="hover:text-teal-200 transition duration-300 flex items-center"
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
-            <div
-              id="nav-login-dropdown"
-              class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden"
-            >
-              <a
-                href="/login?role=patient"
-                class="block px-4 py-2 text-gray-800 hover:bg-teal-100"
-              >
-                <i class="fas fa-user-injured mr-2 text-teal-600"></i> Patient
                 Login
-              </a>
-              <a
-                href="/login?role=doctor"
-                class="block px-4 py-2 text-gray-800 hover:bg-teal-100"
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 ml-1 inline transition-transform"
+                  id="nav-dropdown-arrow"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </button>
+              <div
+                id="nav-login-dropdown"
+                class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden"
               >
-                <i class="fas fa-user-md mr-2 text-teal-600"></i> Doctor Login
-              </a>
-              <a
-                href="/login?role=admin"
-                class="block px-4 py-2 text-gray-800 hover:bg-teal-100"
-              >
-                <i class="fas fa-user-shield mr-2 text-teal-600"></i> Admin
-                Login
-              </a>
-              <a
-                href="/login?role=superadmin"
-                class="block px-4 py-2 text-gray-800 hover:bg-teal-100"
-              >
-                <i class="fas fa-user-tie mr-2 text-teal-600"></i> Super Admin
-                Login
-              </a>
+                <a
+                  href="/login?role=patient"
+                  class="block px-4 py-2 text-gray-800 hover:bg-teal-100"
+                >
+                  <i class="fas fa-user-injured mr-2 text-teal-600"></i> Patient
+                  Login
+                </a>
+                <a
+                  href="/login?role=doctor"
+                  class="block px-4 py-2 text-gray-800 hover:bg-teal-100"
+                >
+                  <i class="fas fa-user-md mr-2 text-teal-600"></i> Doctor Login
+                </a>
+                <a
+                  href="/login?role=employee"
+                  class="block px-4 py-2 text-gray-800 hover:bg-teal-100"
+                >
+                  <i class="fas fa-user-tie mr-2 text-teal-600"></i> Employee
+                  Login
+                </a>
+                <a
+                  href="/login?role=managing_director"
+                  class="block px-4 py-2 text-gray-800 hover:bg-teal-100"
+                >
+                  <i class="fas fa-user-shield mr-2 text-teal-600"></i> Managing
+                  Director Login
+                </a>
+              </div>
             </div>
           </div>
-          <!-- Mobile menu button -->
-          <div class="md:hidden">
-            <button
-              id="mobile-menu-button"
-              class="text-white focus:outline-none"
+
+          <button
+            id="mobile-menu-button"
+            class="md:hidden text-white focus:outline-none"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
             >
-              <svg
-                class="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
-          </div>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
         </div>
+
         <!-- Mobile menu -->
         <div id="mobile-menu" class="md:hidden hidden mt-3 pb-2">
           <a
@@ -164,16 +164,16 @@
               <i class="fas fa-user-md mr-2"></i> Doctor
             </a>
             <a
-              href="/login?role=admin"
+              href="/login?role=employee"
               class="block py-1 hover:text-teal-200 transition duration-300"
             >
-              <i class="fas fa-user-shield mr-2"></i> Admin
+              <i class="fas fa-user-tie mr-2"></i> Employee
             </a>
             <a
-              href="/login?role=superadmin"
+              href="/login?role=managing_director"
               class="block py-1 hover:text-teal-200 transition duration-300"
             >
-              <i class="fas fa-user-tie mr-2"></i> Super Admin
+              <i class="fas fa-user-shield mr-2"></i> Managing Director
             </a>
           </div>
         </div>
@@ -216,7 +216,7 @@
                   </svg>
                 </button>
                 <div
-                  id="login-dropdown"
+                  id="hero-login-dropdown"
                   class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden"
                 >
                   <a
@@ -234,27 +234,29 @@
                     Login
                   </a>
                   <a
-                    href="/login?role=admin"
+                    href="/login?role=employee"
                     class="block px-4 py-2 text-gray-800 hover:bg-teal-100"
                   >
-                    <i class="fas fa-user-shield mr-2 text-teal-600"></i> Admin
+                    <i class="fas fa-user-tie mr-2 text-teal-600"></i> Employee
                     Login
                   </a>
                   <a
-                    href="/login?role=superadmin"
+                    href="/login?role=managing_director"
                     class="block px-4 py-2 text-gray-800 hover:bg-teal-100"
                   >
-                    <i class="fas fa-user-tie mr-2 text-teal-600"></i> Super
-                    Admin Login
+                    <i class="fas fa-user-shield mr-2 text-teal-600"></i>
+                    Managing Director Login
                   </a>
                 </div>
               </div>
-              <a
-                href="/register/patient"
-                class="bg-teal-600 hover:bg-teal-700 border border-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300 text-center"
-              >
-                Register as Patient
-              </a>
+              <div class="flex gap-2">
+                <a
+                  href="/register"
+                  class="bg-teal-600 hover:bg-teal-700 border border-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300 text-center"
+                >
+                  Register
+                </a>
+              </div>
             </div>
           </div>
           <div class="md:w-1/2 flex justify-center">
@@ -660,7 +662,7 @@
               </li>
               <li>
                 <a
-                  href="/register/patient"
+                  href="/register"
                   class="text-gray-400 hover:text-white transition duration-300"
                   >Register</a
                 >
@@ -681,8 +683,8 @@
           class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-400"
         >
           <p>
-            &copy; <%= new Date().getFullYear() %> Baraka General Medical
-            Clinic. All rights reserved.
+            © <%= new Date().getFullYear() %> Baraka General Medical Clinic. All
+            rights reserved.
           </p>
         </div>
       </div>
@@ -702,20 +704,23 @@
 
         // Hero section login dropdown toggle
         const loginDropdownBtn = document.getElementById("login-dropdown-btn");
-        const loginDropdown = document.getElementById("login-dropdown");
+        const heroLoginDropdown = document.getElementById(
+          "hero-login-dropdown"
+        );
         const dropdownArrow = document.getElementById("dropdown-arrow");
 
-        if (loginDropdownBtn && loginDropdown) {
+        if (loginDropdownBtn && heroLoginDropdown) {
           let isDropdownOpen = false;
 
-          loginDropdownBtn.addEventListener("click", function () {
+          loginDropdownBtn.addEventListener("click", function (event) {
+            event.stopPropagation();
             isDropdownOpen = !isDropdownOpen;
             if (isDropdownOpen) {
-              loginDropdown.classList.remove("hidden");
-              dropdownArrow.classList.add("rotate-180");
+              heroLoginDropdown.classList.remove("hidden");
+              if (dropdownArrow) dropdownArrow.classList.add("rotate-180");
             } else {
-              loginDropdown.classList.add("hidden");
-              dropdownArrow.classList.remove("rotate-180");
+              heroLoginDropdown.classList.add("hidden");
+              if (dropdownArrow) dropdownArrow.classList.remove("rotate-180");
             }
           });
 
@@ -724,10 +729,10 @@
             if (
               isDropdownOpen &&
               !loginDropdownBtn.contains(event.target) &&
-              !loginDropdown.contains(event.target)
+              !heroLoginDropdown.contains(event.target)
             ) {
-              loginDropdown.classList.add("hidden");
-              dropdownArrow.classList.remove("rotate-180");
+              heroLoginDropdown.classList.add("hidden");
+              if (dropdownArrow) dropdownArrow.classList.remove("rotate-180");
               isDropdownOpen = false;
             }
           });
@@ -743,14 +748,17 @@
         if (navLoginDropdownBtn && navLoginDropdown) {
           let isNavDropdownOpen = false;
 
-          navLoginDropdownBtn.addEventListener("click", function () {
+          navLoginDropdownBtn.addEventListener("click", function (event) {
+            event.stopPropagation();
             isNavDropdownOpen = !isNavDropdownOpen;
             if (isNavDropdownOpen) {
               navLoginDropdown.classList.remove("hidden");
-              navDropdownArrow.classList.add("rotate-180");
+              if (navDropdownArrow)
+                navDropdownArrow.classList.add("rotate-180");
             } else {
               navLoginDropdown.classList.add("hidden");
-              navDropdownArrow.classList.remove("rotate-180");
+              if (navDropdownArrow)
+                navDropdownArrow.classList.remove("rotate-180");
             }
           });
 
@@ -762,7 +770,8 @@
               !navLoginDropdown.contains(event.target)
             ) {
               navLoginDropdown.classList.add("hidden");
-              navDropdownArrow.classList.remove("rotate-180");
+              if (navDropdownArrow)
+                navDropdownArrow.classList.remove("rotate-180");
               isNavDropdownOpen = false;
             }
           });

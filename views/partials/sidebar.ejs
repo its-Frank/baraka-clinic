@@ -1,57 +1,124 @@
-<div class="bg-gray-800 text-white w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out">
+<div
+  class="bg-gray-800 text-white w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out"
+>
   <div class="flex items-center space-x-2 px-4 mb-6">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-8 w-8"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
+      />
     </svg>
     <span class="text-xl font-bold">Baraka Clinic</span>
   </div>
 
   <nav>
     <% if(user.role === 'patient') { %>
-      <a href="/patient/dashboard" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white">
-        <i class="fas fa-home mr-2"></i>Dashboard
-      </a>
+    <a
+      href="/patient/dashboard"
+      class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white"
+    >
+      <i class="fas fa-home mr-2"></i>Dashboard
+    </a>
     <% } else if(user.role === 'doctor') { %>
-      <a href="/doctor/dashboard" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white">
-        <i class="fas fa-home mr-2"></i>Dashboard
-      </a>
-    <% } else if(user.role === 'admin') { %>
-      <a href="/admin/dashboard" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white">
-        <i class="fas fa-home mr-2"></i>Dashboard
-      </a>
-      <a href="/patients" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white">
-        <i class="fas fa-user-injured mr-2"></i>Patients
-      </a>
-      <a href="/doctors" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white">
-        <i class="fas fa-user-md mr-2"></i>Doctors
-      </a>
-      <a href="/assignments" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white">
-        <i class="fas fa-clipboard-list mr-2"></i>Assignments
-      </a>
-      <a href="/bills" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white">
-        <i class="fas fa-file-invoice-dollar mr-2"></i>Bills
-      </a>
-    <% } else if(user.role === 'superadmin') { %>
-      <a href="/superadmin/dashboard" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white">
-        <i class="fas fa-home mr-2"></i>Dashboard
-      </a>
-      <a href="/admins" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white">
-        <i class="fas fa-user-shield mr-2"></i>Admins
-      </a>
-      <a href="/patients" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white">
-        <i class="fas fa-user-injured mr-2"></i>Patients
-      </a>
-      <a href="/doctors" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white">
-        <i class="fas fa-user-md mr-2"></i>Doctors
-      </a>
-      <a href="/assignments" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white">
-        <i class="fas fa-clipboard-list mr-2"></i>Assignments
-      </a>
-      <a href="/bills" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white">
-        <i class="fas fa-file-invoice-dollar mr-2"></i>Bills
-      </a>
+    <a
+      href="/doctor/dashboard"
+      class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white"
+    >
+      <i class="fas fa-home mr-2"></i>Dashboard
+    </a>
+    <% } else if(user.role === 'employee') { %>
+    <a
+      href="/employee/dashboard"
+      class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white"
+    >
+      <i class="fas fa-home mr-2"></i>Dashboard
+    </a>
+    <a
+      href="/patients"
+      class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white"
+    >
+      <i class="fas fa-user-injured mr-2"></i>Patients
+    </a>
+    <a
+      href="/doctors"
+      class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white"
+    >
+      <i class="fas fa-user-md mr-2"></i>Doctors
+    </a>
+    <a
+      href="/assignments"
+      class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white"
+    >
+      <i class="fas fa-clipboard-list mr-2"></i>Assignments
+    </a>
+    <a
+      href="/bills"
+      class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white"
+    >
+      <i class="fas fa-file-invoice-dollar mr-2"></i>Bills
+    </a>
+    <a
+      href="/lab-tests"
+      class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white"
+    >
+      <i class="fas fa-flask mr-2"></i>Lab Tests
+    </a>
+    <% } else if(user.role === 'managing_director') { %>
+    <a
+      href="/managing-director/dashboard"
+      class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white"
+    >
+      <i class="fas fa-home mr-2"></i>Dashboard
+    </a>
+    <a
+      href="/employees"
+      class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white"
+    >
+      <i class="fas fa-user-tie mr-2"></i>Employees
+    </a>
+    <a
+      href="/patients"
+      class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white"
+    >
+      <i class="fas fa-user-injured mr-2"></i>Patients
+    </a>
+    <a
+      href="/doctors"
+      class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white"
+    >
+      <i class="fas fa-user-md mr-2"></i>Doctors
+    </a>
+    <a
+      href="/assignments"
+      class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white"
+    >
+      <i class="fas fa-clipboard-list mr-2"></i>Assignments
+    </a>
+    <a
+      href="/bills"
+      class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white"
+    >
+      <i class="fas fa-file-invoice-dollar mr-2"></i>Bills
+    </a>
+    <a
+      href="/lab-tests"
+      class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white"
+    >
+      <i class="fas fa-flask mr-2"></i>Lab Tests
+    </a>
     <% } %>
-    <a href="/logout" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white mt-6">
+    <a
+      href="/logout"
+      class="block py-2.5 px-4 rounded transition duration-200 hover:bg-teal-700 hover:text-white mt-6"
+    >
       <i class="fas fa-sign-out-alt mr-2"></i>Logout
     </a>
   </nav>
